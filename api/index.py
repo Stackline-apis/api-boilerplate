@@ -3,11 +3,15 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 import os
 from dotenv import load_dotenv
+from api.email_validator import router as email_router
+
 
 load_dotenv()
 
 app = FastAPI(
     title=os.getenv("API_NAME", "Stackline API"),
+
+app.include_router(email_router)
     description=os.getenv("API_DESCRIPTION", "A Stackline utility API"),
     version=os.getenv("API_VERSION", "1.0.0"),
     docs_url="/docs",
