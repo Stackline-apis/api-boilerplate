@@ -5,13 +5,10 @@ import os
 from dotenv import load_dotenv
 from api.email_validator import router as email_router
 
-
 load_dotenv()
 
 app = FastAPI(
     title=os.getenv("API_NAME", "Stackline API"),
-
-app.include_router(email_router)
     description=os.getenv("API_DESCRIPTION", "A Stackline utility API"),
     version=os.getenv("API_VERSION", "1.0.0"),
     docs_url="/docs",
@@ -25,7 +22,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ── Health & Root ──────────────────────────────────────────────────────────────
+app.include_router(email_router)
+
+
+# -- Health & Root -------------------------------------------------------------
 
 @app.get("/", tags=["Health"])
 async def root():
@@ -36,14 +36,15 @@ async def root():
         "docs": "/docs",
     }
 
+
 @app.get("/health", tags=["Health"])
 async def health():
     return {"status": "healthy"}
 
-# ── Your API logic goes below this line ────────────────────────────────────────
-# Replace this example endpoint with your actual API endpoints.
+
+# -- Your API logic goes below this line --------------------------------------
 
 @app.get("/example", tags=["Example"])
 async def example():
-    """Example endpoint — replace with your API logic."""
+    """Example endpoint - replace with your API logic."""
     return {"message": "Replace this with your API logic"}
